@@ -2,6 +2,7 @@
 #include <BluetoothLock.h>
 #include <btstack.h>
 #include <Ethernet.h>
+#include <utility/w5100.h>
 
 static constexpr int WOL_PORT = 9;
 static constexpr bd_addr_t console_mac = {MAC_PS3};
@@ -30,6 +31,10 @@ void setup() {
     Serial.begin(9600);
     EthernetClass::init(17);
     EthernetClass::begin(eth_mac);
+    // Switch link speed to 10mbps to prevent drawing too much energy from 3v
+    W5100Class::writePHYCFGR_W5500(0xC8);
+    W5100Class::writePHYCFGR_W5500(0x48);
+    W5100Class::writePHYCFGR_W5500(0xC8);
 
     delay(500);
 
